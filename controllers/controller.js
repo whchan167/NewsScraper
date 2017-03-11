@@ -23,11 +23,12 @@ Router.get("/scrape", function(req, res) {
   
   // Make a request for the news section of ycombinator
   request("https://www.cnbc.com", function(error, response, html) {
+    if (!error){
     // Load the html body from request into cheerio
     var $ = cheerio.load(html);
   
     // For each element with a "title" class
-    $(".headline").each(function(i, element) {
+    $("span.headline").each(function(i, element) {
 
       var result = {};
       
@@ -36,7 +37,7 @@ Router.get("/scrape", function(req, res) {
       // Save the href value of each link enclosed in the current element
       result.link = "https://www.cnbc.com" + $(this).children("a").attr("href");
 
-        if ( $(this).children("a").attr("href") ===!"undefined"){
+        
         // using new Article model, create a new entry.
         // Notice the (result):
         // This effectively passes the result object to the entry (and the title and link)
@@ -53,9 +54,10 @@ Router.get("/scrape", function(req, res) {
             res.json(doc);
           }
         })
-       } 
       });
+      }
     });
+
 });
 
 // Retrieve data from the db
