@@ -46,7 +46,6 @@ $(document).on('click', "button", function(){
 
 $(document).on('click', '#deletecomment', function(){
   var thisId = $(this).attr('data-id');
-  console.log(thisId);
 
   $.ajax({
     method: "POST",
@@ -73,8 +72,7 @@ $(document).on('click', '#savecomment', function(){
       console.log(data);
     //   $('#comment').empty();
     // });
-      $('#titleinput').val("");
-      $('#bodyinput').val("");
+      console.log(data);
   });
 });    
 

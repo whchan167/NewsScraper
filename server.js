@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var request = require('request');
+mongoose.Promise = Promise
 
 //requiring bodyParser
 app.use(bodyParser.json());

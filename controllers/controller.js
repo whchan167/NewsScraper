@@ -1,3 +1,4 @@
+
 // Dependencies
 var express = require("express");
 var mongoose = require("mongoose");
@@ -19,8 +20,9 @@ Router.get('/', function(req, res) {
 
 // Scrape data from one site and place it into the mongodb db
 Router.get("/scrape", function(req, res) {
+  var baseURL = "http://www.cnbc.com/";
   // Make a request for the news section of ycombinator
-  request("http://www.cnbc.com/", function(error, response, html) {
+  request(baseURL, function(error, response, html) {
     // Load the html body from request into cheerio
     var $ = cheerio.load(html);
   
@@ -32,7 +34,7 @@ Router.get("/scrape", function(req, res) {
         // Save the text of each link enclosed in the current element
       result.title = $(this).children("a").text();
       // Save the href value of each link enclosed in the current element
-      result.link = $(this).children("a").attr("href");
+      result.link = baseURL + $(this).children("a").attr("href");
       
         // using new Article model, create a new entry.
         // Notice the (result):
@@ -47,7 +49,7 @@ Router.get("/scrape", function(req, res) {
           } 
           // or log the doc
           else {
-            console.log(doc);
+            res.json(doc);
           }
         })
       });
@@ -60,7 +62,7 @@ Router.get("/scrape", function(req, res) {
       Article.find({}, function(error, doc) {
     // Throw any errors to the console
         if (error) {
-         console.log(error);
+          consloe.log(error);
         }
     // If there are no errors, send the data to the browser as a json
         else {
