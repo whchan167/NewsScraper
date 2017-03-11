@@ -25,7 +25,7 @@ var routes = require('./controllers/controller.js');
 app.use("/", routes);
 
 //setting up mongoose database
-mongoose.connect("mongodb://heroku_4fmdtb8b:ns6jba2dpvurle3gf91ssl50m4@ds129030.mlab.com:29030/heroku_4fmdtb8b");
+mongoose.connect("mongodb://heroku_mb89lpwt:i82hia6ke49j7n3nv3c78qe56b@ds129010.mlab.com:29010/heroku_mb89lpwt");
 var db = mongoose.connection;
 
 db.on('error', function(err) {
