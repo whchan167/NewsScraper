@@ -81,7 +81,7 @@ Router.get('/article/:id', function(req, res) {
                 console.log(err);
             } else {
                 console.log("this is doc" + doc)
-                res.json(doc);
+                res.send(doc);
             }
         });
 });
@@ -110,7 +110,7 @@ Router.post('/article/:id', function(req, res) {
                     if (err) {
                         console.log(err);
                     } else {
-                        res.render("index");
+                        res.send(doc);
                     }
                 });
         }
