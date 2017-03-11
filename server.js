@@ -5,7 +5,6 @@ var mongoose = require('mongoose');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var request = require('request');
-mongoose.Promise = Promise
 
 //requiring bodyParser
 app.use(bodyParser.json());
@@ -26,7 +25,8 @@ var routes = require('./controllers/controller.js');
 app.use("/", routes);
 
 //setting up mongoose database
-mongoose.connect("mongodb://heroku_164t3nb2:111bf4q6obrk5h1116sl3mp5jd@ds129030.mlab.com:29030/heroku_164t3nb2");
+mongoose.connect('mongodb://localhost/cnbcDB');
+// ("mongodb://heroku_164t3nb2:111bf4q6obrk5h1116sl3mp5jd@ds129030.mlab.com:29030/heroku_164t3nb2");
 var db = mongoose.connection;
 
 db.on('error', function(err) {

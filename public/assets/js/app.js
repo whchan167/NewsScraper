@@ -72,7 +72,8 @@ $(document).on('click', '#savecomment', function(){
       console.log(data);
     //   $('#comment').empty();
     // });
-      console.log(data);
+      $('#titleinput').html();
+      $('#bodyinput').html()
   });
 });    
 

@@ -35,7 +35,8 @@ Router.get("/scrape", function(req, res) {
       result.title = $(this).children("a").text();
       // Save the href value of each link enclosed in the current element
       result.link = "https://www.cnbc.com" + $(this).children("a").attr("href");
-      
+
+        if ( $(this).children("a").attr("href") ===!"undefined"){
         // using new Article model, create a new entry.
         // Notice the (result):
         // This effectively passes the result object to the entry (and the title and link)
@@ -52,6 +53,7 @@ Router.get("/scrape", function(req, res) {
             res.json(doc);
           }
         })
+       } 
       });
     });
 });
