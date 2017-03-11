@@ -56,7 +56,7 @@ Router.get("/scrape", function(req, res) {
 
 // Retrieve data from the db
     Router.get("/article", function(req, res) {
-  // Find all results from the news collection in the db
+  // Find all results from the article collection in the db
       Article.find({}, function(error, doc) {
     // Throw any errors to the console
         if (error) {
@@ -71,11 +71,12 @@ Router.get("/scrape", function(req, res) {
 
 Router.get('/article/:id', function(req, res) {
     Article.findOne({ '_id': req.params.id })
-        .populate('comment')
-        .exec(function(err, doc) {
+          .populate('comment')
+          .exec(function(err, doc) {
             if (err) {
                 console.log(err);
             } else {
+                console.log("this is doc" + doc)
                 res.json(doc);
             }
         });
@@ -83,10 +84,9 @@ Router.get('/article/:id', function(req, res) {
 
 // Route to delete notes
 Router.post('/deletecomment/:id', function(req, res) {
-  console.log(req.params.id);
   Comment.findOne({ '_id': req.params.id })
-          .remove('note')
-          .exec(function(err, doc) {
+            .remove('comment')
+            .exec(function(err, doc) {
             if (err) {
               console.log(err);
              } else {
@@ -101,12 +101,12 @@ Router.post('/article/:id', function(req, res) {
         if (err) {
             console.log(err);
         } else {
-            News.findOneAndUpdate({ '_id': req.params.id }, { 'comment': doc._id })
-                .exec(function(err, doc) {
+            Article.findOneAndUpdate({ '_id': req.params.id }, { 'comment': doc._id })
+                  .exec(function(err, doc) {
                     if (err) {
                         console.log(err);
                     } else {
-                        res.json(doc);
+                        res.render("index");
                     }
                 });
         }
