@@ -1,14 +1,69 @@
-//
-// ======================
+  $(document).on("click", "button", function(){
+$.getJSON('/article', function(data) {
+  for (var i = 0; i<data.length; i++){
+  $('#article').append('<div class="row"><h3 data-id="' + data[i]._id + '">'+ 
+                          data[i].title + '</h3><br><a href="'+ 
+                          data[i].link + '"><button class="btn btn-info btn-lg">Read Article</button></a></div>');
+                          }
+                    });
+            });
 
-// When user clicks the comment sort button, display table sorted by weight
-$("scraped").on("click", function() {
-  // First, empty the table
-  $("#results").empty();
-  // Now do an api call to the back end for a json with all animals, sorted by weight
-  $.getJSON("/news", function(data) {
-    // For each entry of that json...
-    $("#results").append("")
+$(document).on('click', "#comment", function(){
+  $('#comment').empty();
+  var thisId = $(this).attr('data-id');
+
+  $.ajax({
+    method: "GET",
+    url: "/article/" + thisId,
+  })
+    .done(function( data ) {
+      console.log(data);
+      $('#comment').append('<h2>' + data.title + '</h2>');
+      $('#comment').append('<input id="titleinput" name="title" >');
+      $('#comment').append('<textarea id="bodyinput" name="body"></textarea>');
+      $('#comment').append('<button data-id="' + data._id + '" id="savecomment">Save Comment</button>');
+
+      if(data.comment){
+
+        $('#titleinput').val(data.comment.title);
+        $('#bodyinput').val(data.comment.body);
+      }
+    });
+});
+
+// Click delete note
+
+$(document).on('click', '#deletecomment', function(){
+  var thisId = $(this).attr('data-id');
+  console.log(thisId);
+
+  $.ajax({
+    method: "POST",
+    url: "/deletecomment/" + thisId
+  }).done(function() {
+      //input title and body from comment
+      $('#titleinput').val("");
+      $('#bodyinput').val("");
   });
 });
+
+$(document).on('click', '#savecomment', function(){
+  var thisId = $(this).attr('data-id');
+  console.log(thisId);
+
+  $.ajax({
+    method: "POST",
+    url: "/article/" + thisId,
+    data: {
+      title: $('#titleinput').val(),
+      body: $('#bodyinput').val()
+    }
+  }).done(function( data ) {
+      console.log(data);
+    //   $('#comment').empty();
+    // });
+      $('#titleinput').val("");
+      $('#bodyinput').val("");
+  });
+});    
 

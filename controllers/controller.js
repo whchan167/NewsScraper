@@ -10,7 +10,7 @@ var cheerio = require("cheerio");
 var Router = express.Router()
 
 var Comment = require('../models/comment.js');
-var News = require('../models/news.js');
+var Article = require('../models/article.js');
 
 
 Router.get('/', function(req, res) {
@@ -20,25 +20,24 @@ Router.get('/', function(req, res) {
 // Scrape data from one site and place it into the mongodb db
 Router.get("/scrape", function(req, res) {
   // Make a request for the news section of ycombinator
-  request("https://finance.yahoo.com/", function(error, response, html) {
+  request("http://www.cnbc.com/", function(error, response, html) {
     // Load the html body from request into cheerio
     var $ = cheerio.load(html);
   
     // For each element with a "title" class
-    $("h3").each(function(i, element) {
+    $(".headline").each(function(i, element) {
 
       var result = {};
-    
+      
         // Save the text of each link enclosed in the current element
       result.title = $(this).children("a").text();
       // Save the href value of each link enclosed in the current element
       result.link = $(this).children("a").attr("href");
-      //push all result object in array
-
-        // using new News model, create a new entry.
+      
+        // using new Article model, create a new entry.
         // Notice the (result):
         // This effectively passes the result object to the entry (and the title and link)
-        var entry = new News (result);
+        var entry = new Article (result);
     
         // now, save that entry to the db
         entry.save(function(err, doc) {
@@ -48,32 +47,30 @@ Router.get("/scrape", function(req, res) {
           } 
           // or log the doc
           else {
-            console.log("this is all the data_________________________")
             console.log(doc);
-            res.redirect("/news")
           }
-        });
-    })
-  });
+        })
+      });
+    });
 });
 
 // Retrieve data from the db
-Router.get("/news", function(req, res) {
+    Router.get("/article", function(req, res) {
   // Find all results from the news collection in the db
-  News.find({}, function(error, doc) {
+      Article.find({}, function(error, doc) {
     // Throw any errors to the console
-    if (error) {
-      console.log(error);
-    }
+        if (error) {
+         console.log(error);
+        }
     // If there are no errors, send the data to the browser as a json
-    else {
-      res.json(doc);
-    }
-  });
-});
+        else {
+           res.json(doc);
+        }
+      });
+    });
 
-Router.get('/news/:id', function(req, res) {
-    News.findOne({ '_id': req.params.id })
+Router.get('/article/:id', function(req, res) {
+    Article.findOne({ '_id': req.params.id })
         .populate('comment')
         .exec(function(err, doc) {
             if (err) {
@@ -84,7 +81,21 @@ Router.get('/news/:id', function(req, res) {
         });
 });
 
-Router.post('/news/:id', function(req, res) {
+// Route to delete notes
+Router.post('/deletecomment/:id', function(req, res) {
+  console.log(req.params.id);
+  Comment.findOne({ '_id': req.params.id })
+          .remove('note')
+          .exec(function(err, doc) {
+            if (err) {
+              console.log(err);
+             } else {
+            res.json(doc);
+          }
+      });
+    });
+
+Router.post('/article/:id', function(req, res) {
     var newComment = new Comment(req.body);
     newComment.save(function(err, doc) {
         if (err) {
@@ -95,7 +106,7 @@ Router.post('/news/:id', function(req, res) {
                     if (err) {
                         console.log(err);
                     } else {
-                        res.send(doc);
+                        res.json(doc);
                     }
                 });
         }

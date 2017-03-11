@@ -25,7 +25,7 @@ var routes = require('./controllers/controller.js');
 app.use("/", routes);
 
 //setting up mongoose database
-mongoose.connect('mongodb://localhost/News');
+mongoose.connect('mongodb://localhost/cnbcDB');
 var db = mongoose.connection;
 
 db.on('error', function(err) {

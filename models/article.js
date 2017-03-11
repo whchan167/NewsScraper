@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var NewsSchema = new Schema({
+var ArticleSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required:true
   },
   link: {
     type: String,
@@ -17,7 +17,7 @@ var NewsSchema = new Schema({
 });
 
 // Create the "News" model with the NewsSchema
-var News = mongoose.model('News', NewsSchema);
+var Article = mongoose.model('Article', ArticleSchema);
 
 // export the model
-module.exports = News;
+module.exports = Article;

@@ -2,25 +2,16 @@
 	<div class="text-vertical-center">
 		<h1><strong>Market NewsScraper</strong></h1>
 		<form action="/scrape" method="get">
-		<button class="btn btn-primary btn-lg" type="submit"><strong>Scraped Articles</strong></buttom>
+		<button class="btn btn-primary btn-lg" type="submit"><strong>Scraped Articles</strong></button>
 		</form>
 	</div>
 </header>
 
-<div class="container-fluid" id="results">
-	<div class="row">
-		{{#each news}}
-			<h3 id={{this.id}}>{{this.title}}</h3>
-			<a href= "{{this.link}}"><button type="submit" class="btn btn-info btn-lg">Click here if you want to read this news!</button></a>
-			<hr>
-		{{/each}}
-	</div>
+
+<div id="article" class="container-fluid">
 </div>
 
-
-<div id="comment">
-
-</div>
+<div id="comment"></div>
 
 <footer>
 
