@@ -22,7 +22,7 @@ Router.get('/', function(req, res) {
 Router.get("/scrape", function(req, res) {
   
   // Make a request for the news section of ycombinator
-  request("https://www.cnbc.com", function(error, response, html) {
+  request("http://www.cnbc.com", function(error, response, html) {
     if (!error){
     // Load the html body from request into cheerio
     var $ = cheerio.load(html);
@@ -35,7 +35,7 @@ Router.get("/scrape", function(req, res) {
         // Save the text of each link enclosed in the current element
       result.title = $(this).children("a").text();
       // Save the href value of each link enclosed in the current element
-      result.link = "https://www.cnbc.com" + $(this).children("a").attr("href");
+      result.link = "http://www.cnbc.com" + $(this).children("a").attr("href");
 
         
         // using new Article model, create a new entry.
