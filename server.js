@@ -5,10 +5,11 @@ var mongoose = require('mongoose');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var request = require('request');
+mongoose.Promise = Promise
 
 //requiring bodyParser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 

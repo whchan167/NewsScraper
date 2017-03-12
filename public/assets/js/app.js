@@ -1,6 +1,7 @@
-  $(document).on("click", "#start", function(){
-    $("#comment").hide();
+
+    
 $.getJSON('/article', function(data) {
+    $("#comment").hide();
   for (var i = 0; i<data.length; i++){
   $('#article').append('<h3 data-id="' + data[i]._id + '">'+ 
                           data[i].title + '</h3><br><a href="'+ 
@@ -8,7 +9,7 @@ $.getJSON('/article', function(data) {
                           +'<button data-id="'+ data[i]._id +'" type="submit" class="btn btn-lg">Article Note</button>');
                           }
                     });
-                });
+                
 
 $(document).on('click', "button", function(){
   $("#comment").show();

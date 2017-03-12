@@ -12,23 +12,23 @@ var Router = express.Router()
 
 var Comment = require('../models/comment.js');
 var Article = require('../models/article.js');
-
+mongoose.Promise = Promise
 
 Router.get('/', function(req, res) {
-  res.render("index");
+  res.redirect("/scrape");
 });
 
 // Scrape data from one site and place it into the mongodb db
 Router.get("/scrape", function(req, res) {
   
   // Make a request for the news section of ycombinator
-  request("http://www.cnbc.com", function(error, response, html) {
-    if (!error){
+  request("http://www.cnbc.com/finance", function(error, response, html) {
+    
     // Load the html body from request into cheerio
     var $ = cheerio.load(html);
   
     // For each element with a "title" class
-    $("span.headline").each(function(i, element) {
+    $("li .headline").each(function(i, element) {
 
       var result = {};
       
@@ -37,7 +37,7 @@ Router.get("/scrape", function(req, res) {
       // Save the href value of each link enclosed in the current element
       result.link = "http://www.cnbc.com" + $(this).children("a").attr("href");
 
-        
+      
         // using new Article model, create a new entry.
         // Notice the (result):
         // This effectively passes the result object to the entry (and the title and link)
@@ -45,19 +45,19 @@ Router.get("/scrape", function(req, res) {
     
         // now, save that entry to the db
         entry.save(function(err, doc) {
+
           // log any errors
           if (err) {
             console.log(err);
           } 
           // or log the doc
           else {
-            res.json(doc);
+            console.log(doc);
           }
         })
       });
-      }
+      res.render("index");
     });
-
 });
 
 // Retrieve data from the db
@@ -82,8 +82,7 @@ Router.get('/article/:id', function(req, res) {
             if (err) {
                 console.log(err);
             } else {
-                console.log("this is doc" + doc)
-                res.send(doc);
+                res.json(doc);
             }
         });
 });
