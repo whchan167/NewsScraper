@@ -60,8 +60,8 @@ $(document).on('click', '#deletecomment', function(){
 
 $(document).on('click', '#savecomment', function(){
   var thisId = $(this).attr('data-id');
-  console.log(thisId);
-
+  
+  //a post request to change comment
   $.ajax({
     method: "POST",
     url: "/article/" + thisId,
@@ -71,10 +71,10 @@ $(document).on('click', '#savecomment', function(){
     }
   }).done(function( data ) {
       console.log(data);
-    //   $('#comment').empty();
+      $('#comment').empty();
     // });
-      $('#titleinput').html();
-      $('#bodyinput').html()
-  });
+    });
+  $("#titleinput").val("");
+  $("#bodyinput").val("");
 });    
 
